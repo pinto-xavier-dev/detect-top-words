@@ -1,0 +1,71 @@
+<html>
+    <head>
+    </head>
+    <body>
+     <!-- Load Babel -->
+    <!-- v6 <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Your custom script here -->
+    <script type="text/babel">
+
+      async  function loadText(){
+            // fetch  big text
+            let response = await fetch('http://norvig.com/big.txt', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'text/plain',
+                    'API-Key': '????'
+                }
+            });
+            let full_text = await response;
+           // let data = "dgarbbage text";
+           full_text.then((data)=>{
+            starWordDetectWorker(data);
+           });
+            
+
+        }
+
+    var word_detect_worker;
+
+    function starWordDetectWorker(full_text) {
+ 
+        if (typeof(Worker) !== "undefined") {
+
+            if (typeof(w) == "undefined") {
+                word_detect_worker = new Worker("word_detect_workers.js");
+            }
+            word_detect_worker.postMessage(full_text);
+
+            word_detect_worker.onmessage = function(event) {
+            document.getElementById("output").innerHTML = event.data;
+            };
+        } else {
+            document.getElementById("output").innerHTML = "Web Worker Not supported.";
+        }
+        
+    }
+
+    function stopWordDetectWorker() {
+        word_detect_worker.terminate();
+        word_detect_worker = undefined;
+    }
+
+
+
+
+
+
+    //transfer  the raw text to the webworker 
+
+
+
+    </script>
+    <h4>Get the complete text</h4>
+    <button  onclick="loadText()">Load text</button>
+
+    <h4>Result:</h4>
+    <div id="output"></div>
+    
+    </body>
+</html>
