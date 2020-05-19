@@ -39,7 +39,9 @@ function splitText(result){
  for(i=0;i<arrOfWordsTemp.length;i++){
     arrOfWordsTemp[i] = arrOfWordsTemp[i].replace(/^\s+|\s+$/g,'');
     arrOfWordsTemp[i] = arrOfWordsTemp[i].replace('[','');
-    setOfWordsTemp.add(arrOfWordsTemp[i]);
+    if( arrOfWordsTemp[i].length>3){
+        setOfWordsTemp.add(arrOfWordsTemp[i]);
+    }
  }
  return setOfWordsTemp;
 }
