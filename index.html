@@ -8,7 +8,8 @@
     <!-- Your custom script here -->
     <script type="text/babel">
 
-      async  function loadText(){
+     /* async  function loadText(){
+          
             // fetch  big text
             let response = await fetch('http://norvig.com/big.txt', {
                 method: 'GET',
@@ -24,7 +25,25 @@
            });
             
 
-        }
+         
+         }
+    */
+        var fulltext = '';
+        function  readFile(event){
+           var upload = event.target;
+           var reader = new FileReader();
+          
+           reader.onload = function(){
+                fulltext  = reader.result;
+               //console.log(fulltext);
+           }
+           reader.readAsText(upload.files[0]);
+
+        }  
+
+    function loadText(){
+        starWordDetectWorker(fulltext); /* call the progress*/
+    }
 
     var word_detect_worker;
 
@@ -39,6 +58,7 @@
 
             word_detect_worker.onmessage = function(event) {
             document.getElementById("output").innerHTML = event.data;
+            stopWordDetectWorker();///stop the worker js
             };
         } else {
             document.getElementById("output").innerHTML = "Web Worker Not supported.";
@@ -62,6 +82,8 @@
 
     </script>
     <h4>Get the complete text</h4>
+    <!-- large file content makes ide un responsive so not importing using module instead using  uplaod method---> 
+    <input type='file' accept='text' onchange='readFile(event)'>
     <button  onclick="loadText()">Load text</button>
 
     <h4>Result:</h4>
