@@ -52,6 +52,7 @@ function wordcounter(result){
        Regexpression = new RegExp(item, 'g');
         itm = Array.from(clean_bigtext.matchAll(Regexpression));
         count_length = itm.length;
+        console.log(count_length);
        count_result.push([item,count_length]);  
    }
    console.log(count_result);
@@ -60,9 +61,10 @@ function wordcounter(result){
 }
 
 function sortDiscendingOrder(count_result){
+    console.log('/////////////////////////////',count_result);
     let sortedArray = count_result.sort(function(a, b) {
         return b[1] - a[1];
       });
-
+    
     return sortedArray;
 }
