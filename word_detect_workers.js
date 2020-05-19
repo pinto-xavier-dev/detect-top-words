@@ -64,6 +64,5 @@ function sortDiscendingOrder(count_result){
         return b[1] - a[1];
       });
 
-
     return sortedArray;
 }
