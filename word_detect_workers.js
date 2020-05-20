@@ -9,21 +9,21 @@ onmessage = e => {
   clean_bigtext = result =  escapeConjuctions(result);
   result =  splitText(result);
 
-  var wordArr = wordcounter(result);
-  console.log(wordArr);
+  var result_arr = wordcounter(result);
+  var dispay_result =[];
+  for(ix in result_arr ){
+    dispay_result.push({ name: result_arr[ix][0], count:result_arr[ix][1] });
+   
+  }
+  console.log(dispay_result);
+  postMessage(JSON.stringify(dispay_result));
 
 }
 
-/*function timedCount(text) {
-  i = i + 1;
-  result_text = i+")"+text;
-  postMessage(result_text);
-  setTimeout(timedCount,467,text);
-}
-*/
+
 
 function escapeSpecialChar(){
-   let result = bigText.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '');
+   let result = bigText.replace(/[&\/\\#,-_|`@^;+()$~%.'":*?<>{}]/g, '');
    result = result.replace( /[\r\n]+/g,'');  // new line  remove
    return result;
 }
@@ -38,7 +38,7 @@ function splitText(result){
  let setOfWordsTemp = new Set([]);
  for(i=0;i<arrOfWordsTemp.length;i++){
     arrOfWordsTemp[i] = arrOfWordsTemp[i].replace(/^\s+|\s+$/g,'');
-    arrOfWordsTemp[i] = arrOfWordsTemp[i].replace('[','');
+    arrOfWordsTemp[i] = arrOfWordsTemp[i].replace(/\[\]/g,'');
     if( arrOfWordsTemp[i].length>3){
         setOfWordsTemp.add(arrOfWordsTemp[i]);
     }
@@ -67,6 +67,6 @@ function sortDiscendingOrder(count_result){
     let sortedArray = count_result.sort(function(a, b) {
         return b[1] - a[1];
       });
-    
-    return sortedArray;
+     
+    return sortedArray.splice(0,10) ;//top 10
 }
